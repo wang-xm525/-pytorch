@@ -56,16 +56,19 @@ def linreg(X, w, b):
     """线性回归模型"""
     return torch.matmul(X, w) + b
 
+#定义损失函数，用的均方误差
 def squared_loss(y_hat, y):  
     return (y_hat - y.reshape(y_hat.shape)) ** 2 / 2
 
+#定于优化算法
 def sgd(params, lr, batch_size): 
     """小批量随机梯度下降"""
     with torch.no_grad():
         for param in params:
-            param -= lr * param.grad / batch_size
+            param -= lr * param.grad / batch_size #这里除以了batch_size 是求均值，如果不在这里求均值，也要在上面求均方误差那里求，都是一样的
             param.grad.zero_()
 
+            #训练过程
 lr = 0.03
 num_epochs = 3
 net = linreg
@@ -76,7 +79,7 @@ for epoch in range(num_epochs):
         l = loss(net(X, w, b), y)  # X和y的小批量损失
         # 因为l形状是(batch_size,1)，而不是一个标量。l中的所有元素被加到一起，
         # 并以此计算关于[w,b]的梯度
-        l.sum().backward()
+        l.sum().backward()#求和算梯度
         sgd([w, b], lr, batch_size)  # 使用参数的梯度更新参数
     with torch.no_grad():
         train_l = loss(net(features, w, b), labels)
