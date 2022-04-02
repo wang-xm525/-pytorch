@@ -26,15 +26,15 @@ features, labels = d2l.synthetic_data(true_w, true_b, 1000)
 
 def load_array(data_arrays, batch_size, is_train=True): 
     """构造一个PyTorch数据迭代器"""
-    dataset = data.TensorDataset(*data_arrays)
-    return data.DataLoader(dataset, batch_size, shuffle=is_train)
+    dataset = data.TensorDataset(*data_arrays)#在我们已知features和labels的情况下我们可以通过这个函数得到一个dataset的数据集
+    return data.DataLoader(dataset, batch_size, shuffle=is_train) #从dataset里面选择batc_Size个
 
 batch_size = 10
 data_iter = load_array((features, labels), batch_size)
 
 """们定义一个data_iter函数， 该函数接收批量大小、特征矩阵和标签向量作为输入，生成大小为batch_size的小批量。 每个小批量包含一组特征和标签。"""
 
-next(iter(data_iter))
+next(iter(data_iter)) #从data_iter出来之后转换成iter类型，然后通过next生成x和y。
 
 """定义模型"""
 
